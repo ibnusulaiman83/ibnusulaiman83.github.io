@@ -1,1 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mi Solutions | Web & Mobile Application Development</title>
+<meta name="description" content="Mi Solutions builds corporate portals, inventory systems, e-learning platforms, e-commerce and event management web applications for organisations in Malaysia.">
+<meta name="theme-color" content="#2563eb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff;
+    --bg-soft:#f4f8ff;
+    --bg-tint:#eef4ff;
+    --text:#0f172a;
+    --muted:#5b6478;
+    --primary:#2563eb;
+    --primary-dark:#1d4ed8;
+    --accent:#06b6d4;
+    --accent-2:#f59e0b;
+    --border:#e3eaf6;
+    --radius:18px;
+    --shadow:0 10px 30px rgba(37,99,235,.10);
+    --shadow-lg:0 20px 50px rgba(37,99,235,.18);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:80px}
+  body{
+    font-family:'Poppins',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    color:var(--text);background:var(--bg);line-height:1.65;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  img,svg{max-width:100%;display:block}
+  a{color:inherit;text-decoration:none}
+  ul{list-style:none}
+  .container{width:min(1160px,100% - 40px);margin-inline:auto}
+  section{padding:88px 0}
+  .eyebrow{
+    display:inline-block;font-size:.8rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--primary);background:var(--bg-tint);padding:6px 14px;border-radius:999px;margin-bottom:14px;
+  }
+  h1,h2,h3{line-height:1.2;font-weight:700}
+  h2{font-size:clamp(1.7rem,3.5vw,2.5rem);margin-bottom:14px}
+  .section-head{text-align:center;max-width:680px;margin:0 auto 52px}
+  .section-head p{color:var(--muted)}
+
+  /* Buttons */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    font:600 .95rem 'Poppins',sans-serif;padding:14px 28px;border-radius:12px;border:2px solid transparent;
+    cursor:pointer;transition:.25s;
+  }
+  .btn-primary{background:linear-gradient(135deg,var(--primary),#4f8bff);color:#fff;box-shadow:0 8px 22px rgba(37,99,235,.3)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(37,99,235,.4)}
+  .btn-outline{border-color:var(--border);background:#fff;color:var(--text)}
+  .btn-outline:hover{border-color:var(--primary);color:var(--primary);transform:translateY(-2px)}
+
+  /* Header */
+  header{
+    position:fixed;inset:0 0 auto 0;z-index:100;background:rgba(255,255,255,.88);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:.3s;
+  }
+  header.scrolled{border-color:var(--border);box-shadow:0 4px 20px rgba(15,23,42,.05)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:72px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.3rem}
+  .logo-mark{
+    width:38px;height:38px;border-radius:11px;display:grid;place-items:center;color:#fff;
+    background:linear-gradient(135deg,var(--primary),var(--accent));font-weight:800;
+  }
+  .logo span em{font-style:normal;color:var(--primary)}
+  .nav-links{display:flex;align-items:center;gap:32px}
+  .nav-links a:not(.btn){font-weight:500;font-size:.95rem;color:var(--muted);transition:.2s}
+  .nav-links a:not(.btn):hover{color:var(--primary)}
+  .nav-links .btn{padding:10px 22px}
+  .menu-btn{display:none;background:none;border:0;cursor:pointer;width:42px;height:42px;border-radius:10px}
+  .menu-btn span{display:block;width:24px;height:2.5px;background:var(--text);margin:5px auto;border-radius:2px;transition:.3s}
+  .menu-btn.open span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+  .menu-btn.open span:nth-child(2){opacity:0}
+  .menu-btn.open span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
+
+  /* Hero */
+  .hero{
+    padding:150px 0 90px;
+    background:
+      radial-gradient(900px 400px at 85% -10%,rgba(6,182,212,.14),transparent 60%),
+      radial-gradient(700px 400px at -10% 20%,rgba(37,99,235,.12),transparent 60%),
+      var(--bg);
+  }
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+  .hero h1{font-size:clamp(2.1rem,5vw,3.6rem);font-weight:800;margin-bottom:20px}
+  .hero h1 .grad{background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p.lead{font-size:1.1rem;color:var(--muted);max-width:540px;margin-bottom:32px}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:38px}
+  .hero-stats{display:flex;gap:36px;flex-wrap:wrap}
+  .hero-stats strong{display:block;font-size:1.7rem;font-weight:800;color:var(--primary)}
+  .hero-stats span{font-size:.85rem;color:var(--muted)}
+
+  /* Hero visual */
+  .visual{position:relative;min-height:420px}
+  .browser{
+    position:absolute;right:0;top:10px;width:88%;background:#fff;border-radius:16px;
+    box-shadow:var(--shadow-lg);border:1px solid var(--border);overflow:hidden;
+  }
+  .browser-bar{display:flex;gap:6px;padding:12px 14px;background:var(--bg-soft);border-bottom:1px solid var(--border)}
+  .browser-bar i{width:10px;height:10px;border-radius:50%;background:#cbd5e1}
+  .browser-bar i:nth-child(1){background:#fda4af}.browser-bar i:nth-child(2){background:#fde68a}.browser-bar i:nth-child(3){background:#86efac}
+  .browser-body{padding:20px;display:grid;gap:12px}
+  .skel{border-radius:8px;background:var(--bg-tint)}
+  .skel.hero-sk{height:90px;background:linear-gradient(135deg,#dbe8ff,#d0f4fb)}
+  .skel.row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;background:none}
+  .skel.row b{height:62px;border-radius:10px;background:var(--bg-tint)}
+  .skel.line{height:10px;width:70%}
+  .skel.line.s{width:45%}
+  .phone{
+    position:absolute;left:0;bottom:0;width:36%;min-width:130px;background:#0f172a;border-radius:28px;padding:9px;
+    box-shadow:var(--shadow-lg);animation:float 5s ease-in-out infinite;
+  }
+  .phone-screen{background:#fff;border-radius:21px;padding:14px 12px;aspect-ratio:9/17;display:flex;flex-direction:column;gap:9px}
+  .phone-notch{width:40%;height:6px;background:#0f172a;border-radius:6px;margin:0 auto 4px}
+  .p-card{height:56px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--accent))}
+  .p-row{height:30px;border-radius:9px;background:var(--bg-tint)}
+  .p-row.sm{height:30px;width:75%}
+  .p-btn{margin-top:auto;height:34px;border-radius:10px;background:var(--accent-2)}
+  .chip{
+    position:absolute;background:#fff;border:1px solid var(--border);border-radius:14px;padding:10px 14px;
+    box-shadow:var(--shadow);font-size:.8rem;font-weight:600;display:flex;align-items:center;gap:8px;
+  }
+  .chip.c1{right:-4px;bottom:50px;animation:float 6s ease-in-out infinite reverse}
+  .chip.c2{left:30%;top:-8px;animation:float 5.5s ease-in-out infinite}
+  .dot{width:9px;height:9px;border-radius:50%;background:#22c55e}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+  /* Services */
+  .services{background:var(--bg-soft)}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .card{
+    background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:32px 28px;transition:.3s;
+  }
+  .card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:transparent}
+  .icon{
+    width:56px;height:56px;border-radius:15px;display:grid;place-items:center;margin-bottom:20px;
+    background:var(--bg-tint);color:var(--primary);
+  }
+  .icon svg{width:28px;height:28px}
+  .card h3{font-size:1.15rem;margin-bottom:10px}
+  .card p{color:var(--muted);font-size:.95rem}
+  .card.cta-card{
+    background:linear-gradient(145deg,var(--primary),#3b82f6 60%,var(--accent));color:#fff;border:0;
+    display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:12px;
+  }
+  .card.cta-card p{color:rgba(255,255,255,.92)}
+  .card.cta-card .btn{background:#fff;color:var(--primary);margin-top:8px}
+
+  /* Why */
+  .why-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+  .why-list{display:grid;gap:22px;margin-top:28px}
+  .why-item{display:flex;gap:16px}
+  .tick{flex:none;width:28px;height:28px;border-radius:50%;background:var(--primary);color:#fff;display:grid;place-items:center;margin-top:3px}
+  .tick svg{width:15px;height:15px}
+  .why-item h4{font-size:1.02rem;margin-bottom:2px}
+  .why-item p{color:var(--muted);font-size:.93rem}
+  .stats-box{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .stat{
+    background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:28px 22px;text-align:center;box-shadow:var(--shadow);
+  }
+  .stat:nth-child(2){transform:translateY(24px)}
+  .stat:nth-child(4){transform:translateY(24px)}
+  .stat strong{display:block;font-size:2.2rem;font-weight:800;color:var(--primary);line-height:1.1}
+  .stat span{font-size:.88rem;color:var(--muted)}
+
+  /* Process */
+  .process{background:var(--bg-soft)}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;counter-reset:s}
+  .step{position:relative;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:30px 24px}
+  .step::before{
+    counter-increment:s;content:"0" counter(s);display:block;font-size:2.2rem;font-weight:800;
+    background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:8px;
+  }
+  .step h3{font-size:1.08rem;margin-bottom:8px}
+  .step p{color:var(--muted);font-size:.92rem}
+
+  /* Clients */
+  .client-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .client{
+    display:flex;flex-direction:column;gap:14px;background:#fff;border:1px solid var(--border);
+    border-radius:var(--radius);padding:26px 22px;transition:.3s;min-height:170px;
+  }
+  a.client:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:var(--primary)}
+  .client-avatar{
+    width:48px;height:48px;border-radius:14px;display:grid;place-items:center;color:#fff;font-weight:700;font-size:1rem;
+    background:linear-gradient(135deg,var(--primary),var(--accent));
+  }
+  .client:nth-child(2) .client-avatar{background:linear-gradient(135deg,#06b6d4,#34d399)}
+  .client:nth-child(3) .client-avatar{background:linear-gradient(135deg,#f59e0b,#fb7185)}
+  .client:nth-child(4) .client-avatar{background:linear-gradient(135deg,#8b5cf6,#60a5fa)}
+  .client:nth-child(5) .client-avatar{background:linear-gradient(135deg,#10b981,#06b6d4)}
+  .client:nth-child(6) .client-avatar{background:linear-gradient(135deg,#ef4444,#f59e0b)}
+  .client:nth-child(7) .client-avatar{background:linear-gradient(135deg,#0ea5e9,#6366f1)}
+  .client h3{font-size:1rem;line-height:1.35}
+  .client small{color:var(--primary);font-weight:500;font-size:.82rem;margin-top:auto;display:flex;align-items:center;gap:6px;word-break:break-all}
+  .client small.plain{color:var(--muted)}
+  .client.more{background:var(--bg-tint);border-style:dashed;justify-content:center;align-items:center;text-align:center}
+  .client.more strong{font-size:1.9rem;color:var(--primary);font-weight:800;line-height:1.1}
+  .client.more span{color:var(--muted);font-size:.9rem}
+
+  /* Contact */
+  .contact-wrap{
+    display:grid;grid-template-columns:1fr 1.1fr;gap:0;border-radius:28px;overflow:hidden;box-shadow:var(--shadow-lg);border:1px solid var(--border);
+  }
+  .contact-info{background:linear-gradient(145deg,var(--primary),#3b82f6 60%,var(--accent));color:#fff;padding:48px 40px}
+  .contact-info h2{color:#fff}
+  .contact-info p{opacity:.92;margin-bottom:28px}
+  .contact-info li{display:flex;gap:14px;align-items:flex-start;margin-bottom:18px;font-size:.95rem}
+  .contact-info li svg{flex:none;width:22px;height:22px;margin-top:2px}
+  .contact-form{background:#fff;padding:48px 40px;display:grid;gap:16px}
+  .field label{display:block;font-size:.85rem;font-weight:600;margin-bottom:6px}
+  .field input,.field select,.field textarea{
+    width:100%;font:400 .95rem 'Poppins',sans-serif;padding:13px 16px;border:1.5px solid var(--border);border-radius:12px;
+    background:var(--bg-soft);color:var(--text);transition:.2s;
+  }
+  .field input:focus,.field select:focus,.field textarea:focus{outline:0;border-color:var(--primary);background:#fff;box-shadow:0 0 0 4px rgba(37,99,235,.12)}
+  .field textarea{min-height:120px;resize:vertical}
+  .form-note{font-size:.8rem;color:var(--muted);text-align:center}
+
+  /* Footer */
+  footer{background:#0f172a;color:#cbd5e1;padding:56px 0 28px}
+  .foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:40px;margin-bottom:36px}
+  footer .logo{color:#fff;margin-bottom:14px}
+  footer p{font-size:.92rem;max-width:340px}
+  footer h4{color:#fff;font-size:.95rem;margin-bottom:14px}
+  footer li{margin-bottom:9px;font-size:.92rem}
+  footer li a:hover{color:#fff}
+  .copy{border-top:1px solid #1e293b;padding-top:22px;text-align:center;font-size:.85rem;color:#94a3b8}
+
+  /* Scroll to top + reveal */
+  .to-top{
+    position:fixed;right:20px;bottom:20px;width:46px;height:46px;border-radius:50%;border:0;cursor:pointer;
+    background:var(--primary);color:#fff;box-shadow:var(--shadow-lg);display:grid;place-items:center;
+    opacity:0;visibility:hidden;transform:translateY(10px);transition:.3s;z-index:90;
+  }
+  .to-top.show{opacity:1;visibility:visible;transform:none}
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    .reveal{opacity:1;transform:none}
+    html{scroll-behavior:auto}
+  }
+
+  /* Tablet */
+  @media (max-width:1024px){
+    .cards{grid-template-columns:repeat(2,1fr)}
+    .client-grid{grid-template-columns:repeat(3,1fr)}
+    .steps{grid-template-columns:repeat(2,1fr)}
+    .why-grid{gap:36px}
+  }
+  /* Mobile / small tablet */
+  @media (max-width:860px){
+    section{padding:68px 0}
+    .menu-btn{display:block}
+    .nav-links{
+      position:absolute;top:72px;left:0;right:0;background:#fff;flex-direction:column;align-items:stretch;gap:0;
+      padding:12px 20px 22px;border-bottom:1px solid var(--border);box-shadow:0 14px 24px rgba(15,23,42,.08);
+      max-height:0;overflow:hidden;opacity:0;visibility:hidden;transition:.3s;
+    }
+    .nav-links.open{max-height:420px;opacity:1;visibility:visible}
+    .nav-links a:not(.btn){padding:14px 4px;border-bottom:1px solid var(--border)}
+    .nav-links .btn{margin-top:14px}
+    .hero{padding:120px 0 64px}
+    .hero-grid,.why-grid,.contact-wrap{grid-template-columns:1fr}
+    .hero-text{text-align:center}
+    .hero p.lead{margin-inline:auto}
+    .hero-cta,.hero-stats{justify-content:center}
+    .visual{min-height:380px;max-width:520px;margin:10px auto 0;width:100%}
+    .stat:nth-child(2),.stat:nth-child(4){transform:none}
+    .client-grid{grid-template-columns:repeat(2,1fr)}
+    .contact-info,.contact-form{padding:36px 26px}
+    .foot-grid{grid-template-columns:1fr 1fr}
+    .foot-grid > div:first-child{grid-column:1/-1}
+  }
+  @media (max-width:560px){
+    .container{width:calc(100% - 32px)}
+    .cards,.steps{grid-template-columns:1fr}
+    .client-grid{gap:12px}
+    .client{padding:20px 16px;min-height:150px}
+    .hero-cta .btn{width:100%}
+    .hero-stats{gap:22px}
+    .visual{min-height:340px}
+    .chip.c2{display:none}
+    .stats-box{gap:12px}
+    .stat{padding:22px 14px}
+    .stat strong{font-size:1.8rem}
+    .foot-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<header id="top-header">
+  <div class="container nav">
+    <a href="#home" class="logo" aria-label="Mi Solutions">
+      <div class="logo-mark">Mi</div>
+      <span>Mi <em>Solutions</em></span>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav-links" id="navLinks">
+      <a href="#services">Services</a>
+      <a href="#why">Why Us</a>
+      <a href="#process">Process</a>
+      <a href="#clients">Clients</a>
+      <a href="#contact" class="btn btn-primary">Get a Quote</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="container hero-grid">
+      <div class="hero-text">
+        <span class="eyebrow">Web &bull; Mobile-Ready &bull; Custom Built</span>
+        <h1>Web Applications Built to <span class="grad">Power Your Organisation</span></h1>
+        <p class="lead">Mi Solutions designs and develops reliable, responsive web applications &mdash; from corporate portals and e-commerce to learning platforms and event systems &mdash; tailored to how your organisation works.</p>
+        <div class="hero-cta">
+          <a href="#contact" class="btn btn-primary">Start Your Project
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="#clients" class="btn btn-outline">See Who We Work With</a>
+        </div>
+        <div class="hero-stats">
+          <div><strong>30+</strong><span>Projects Delivered</span></div>
+          <div><strong>5</strong><span>Core Solutions</span></div>
+          <div><strong>100%</strong><span>Responsive Builds</span></div>
+        </div>
+      </div>
+
+      <div class="visual" aria-hidden="true">
+        <div class="browser">
+          <div class="browser-bar"><i></i><i></i><i></i></div>
+          <div class="browser-body">
+            <div class="skel hero-sk"></div>
+            <div class="skel row"><b></b><b></b><b></b></div>
+            <div class="skel line"></div>
+            <div class="skel line s"></div>
+          </div>
+        </div>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-notch"></div>
+            <div class="p-card"></div>
+            <div class="p-row"></div>
+            <div class="p-row sm"></div>
+            <div class="p-row"></div>
+            <div class="p-btn"></div>
+          </div>
+        </div>
+        <div class="chip c1"><span class="dot"></span> Live &amp; Running</div>
+        <div class="chip c2">&#9889; Fast &amp; Responsive</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="services">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Our Services</span>
+        <h2>Solutions Built Around Your Needs</h2>
+        <p>Five core web solutions, each designed to work seamlessly on desktop, tablet and mobile.</p>
+      </div>
+      <div class="cards">
+        <article class="card reveal">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6M9 10h.01M15 10h.01"/></svg></div>
+          <h3>Corporate Company Portal</h3>
+          <p>Professional, brand-focused websites that present your company, services and news clearly &mdash; easy for your team to update.</p>
+        </article>
+        <article class="card reveal">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5 9 5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg></div>
+          <h3>Inventory Management Web App</h3>
+          <p>Track stock, suppliers and movements in one place, with clear reports that help you make faster, better decisions.</p>
+        </article>
+        <article class="card reveal">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5z"/><path d="M6 12v5c3 2.5 9 2.5 12 0v-5"/><path d="M22 10v6"/></svg></div>
+          <h3>Online Learning Application</h3>
+          <p>E-learning platforms for courses, lessons, quizzes and learner progress &mdash; ready for schools, institutions and training providers.</p>
+        </article>
+        <article class="card reveal">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg></div>
+          <h3>E-Commerce Web Application</h3>
+          <p>Online stores with product catalogues, shopping cart, checkout and order management to help you sell online with confidence.</p>
+        </article>
+        <article class="card reveal">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg></div>
+          <h3>Event &amp; Conference Management</h3>
+          <p>Registration, programme, abstract submission and attendee management for conferences, seminars and large events.</p>
+        </article>
+        <article class="card cta-card reveal">
+          <h3>Have something else in mind?</h3>
+          <p>Every organisation is different. Tell us what you need and we will recommend the right approach.</p>
+          <a href="#contact" class="btn">Talk to Us</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section id="why">
+    <div class="container why-grid">
+      <div class="reveal">
+        <span class="eyebrow">Why Mi Solutions</span>
+        <h2>A Technology Partner You Can Rely On</h2>
+        <p style="color:var(--muted)">We focus on practical results &mdash; systems that work well, are delivered on time and can grow with your organisation.</p>
+        <div class="why-list">
+          <div class="why-item">
+            <div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>
+            <div><h4>Proven Experience</h4><p>Involved in 30+ projects across corporate, education, retail, foundation and event sectors.</p></div>
+          </div>
+          <div class="why-item">
+            <div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>
+            <div><h4>Built Around You</h4><p>Custom solutions shaped by your workflow, not one-size-fits-all templates.</p></div>
+          </div>
+          <div class="why-item">
+            <div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>
+            <div><h4>Works on Every Device</h4><p>Responsive design so your users have a great experience on desktop, tablet and mobile.</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="stats-box reveal">
+        <div class="stat"><strong>30+</strong><span>Projects Delivered</span></div>
+        <div class="stat"><strong>5</strong><span>Core Solutions</span></div>
+        <div class="stat"><strong>7+</strong><span>Featured Clients</span></div>
+        <div class="stat"><strong>100%</strong><span>Responsive Design</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="process" id="process">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">How We Work</span>
+        <h2>A Simple 4-Step Process</h2>
+        <p>A clear, structured approach that keeps your project on track from the first conversation to launch day.</p>
+      </div>
+      <div class="steps">
+        <div class="step reveal"><h3>Discover</h3><p>We learn about your goals, users and requirements to define the right scope.</p></div>
+        <div class="step reveal"><h3>Design</h3><p>Wireframes and visual designs are prepared for your review before development begins.</p></div>
+        <div class="step reveal"><h3>Develop</h3><p>We build in stages, with regular updates and testing along the way.</p></div>
+        <div class="step reveal"><h3>Launch &amp; Support</h3><p>We deploy your application, train your team and remain available for support.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLIENTS -->
+  <section id="clients">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Our Clients</span>
+        <h2>Trusted by Organisations Across Malaysia</h2>
+        <p>A selection of the organisations we have had the privilege of working with.</p>
+      </div>
+      <div class="client-grid">
+        <a class="client reveal" href="https://outdoorpro.com.my" target="_blank" rel="noopener">
+          <div class="client-avatar">OP</div>
+          <h3>Outdoorpro Sports &amp; Gear Sdn Bhd</h3>
+          <small>outdoorpro.com.my &#8599;</small>
+        </a>
+        <a class="client reveal" href="https://ijfgroup.com.my" target="_blank" rel="noopener">
+          <div class="client-avatar">IJF</div>
+          <h3>IJF Group</h3>
+          <small>ijfgroup.com.my &#8599;</small>
+        </a>
+        <a class="client reveal" href="https://asiatox2026.com" target="_blank" rel="noopener">
+          <div class="client-avatar">AT</div>
+          <h3>ASIATOX 2026</h3>
+          <small>asiatox2026.com &#8599;</small>
+        </a>
+        <a class="client reveal" href="https://apnno2026.com" target="_blank" rel="noopener">
+          <div class="client-avatar">AP</div>
+          <h3>APNNO 2026</h3>
+          <small>apnno2026.com &#8599;</small>
+        </a>
+        <a class="client reveal" href="https://almadaniah.com" target="_blank" rel="noopener">
+          <div class="client-avatar">YM</div>
+          <h3>Yayasan Al Madaniah</h3>
+          <small>almadaniah.com &#8599;</small>
+        </a>
+        <a class="client reveal" href="https://utmpress.utm.my" target="_blank" rel="noopener">
+          <div class="client-avatar">UP</div>
+          <h3>UTM Press</h3>
+          <small>utmpress.utm.my &#8599;</small>
+        </a>
+        <div class="client reveal">
+          <div class="client-avatar">DJ</div>
+          <h3>Digital Johor Sdn Bhd</h3>
+          <small class="plain">Technology partner</small>
+        </div>
+        <div class="client more reveal">
+          <strong>30+</strong>
+          <span>projects &amp; many more</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="services" id="contact">
+    <div class="container">
+      <div class="contact-wrap reveal">
+        <div class="contact-info">
+          <h2>Let's Discuss Your Project</h2>
+          <p>Tell us about your idea and we will get back to you with recommendations and an estimate within 1&ndash;2 working days.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg><span>hello@misolutions.my</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.4 1.8.7 2.7a2 2 0 01-.5 2.1L8 9.8a16 16 0 006 6l1.3-1.3a2 2 0 012.1-.4c.9.3 1.8.6 2.7.7a2 2 0 011.7 2z"/></svg><span>+60 12-345 6789</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><span>Malaysia</span></li>
+          </ul>
+        </div>
+        <form class="contact-form" id="contactForm" novalidate>
+          <div class="field"><label for="name">Name</label><input id="name" name="name" type="text" placeholder="Your name" required></div>
+          <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" placeholder="name@company.com" required></div>
+          <div class="field">
+            <label for="type">Solution Needed</label>
+            <select id="type" name="type">
+              <option>Corporate Company Portal</option>
+              <option>Inventory Management Web App</option>
+              <option>Online Learning Application</option>
+              <option>E-Commerce Web Application</option>
+              <option>Event &amp; Conference Management</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field"><label for="message">Message</label><textarea id="message" name="message" placeholder="Briefly tell us about your project..." required></textarea></div>
+          <button type="submit" class="btn btn-primary">Send Enquiry</button>
+          <p class="form-note" id="formNote">This will open your email app with your message ready to send.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div>
+        <div class="logo"><div class="logo-mark">Mi</div><span>Mi <em style="color:#60a5fa">Solutions</em></span></div>
+        <p>Custom web application development for corporate portals, inventory, e-learning, e-commerce and events.</p>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#why">Why Us</a></li>
+          <li><a href="#process">Process</a></li>
+          <li><a href="#clients">Clients</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:hello@misolutions.my">hello@misolutions.my</a></li>
+          <li><a href="tel:+60123456789">+60 12-345 6789</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copy">&copy; <span id="year">2026</span> Mi Solutions. All rights reserved.</div>
+  </div>
+</footer>
+
+<button class="to-top" id="toTop" aria-label="Back to top">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<script>
+  // Mobile menu
+  const menuBtn = document.getElementById('menuBtn');
+  const navLinks = document.getElementById('navLinks');
+  function closeMenu(){
+    navLinks.classList.remove('open');
+    menuBtn.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded','false');
+  }
+  menuBtn.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    menuBtn.classList.toggle('open', open);
+    menuBtn.setAttribute('aria-expanded', open);
+  });
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+  window.addEventListener('resize', () => { if (window.innerWidth > 860) closeMenu(); });
+
+  // Header shadow + back-to-top
+  const header = document.getElementById('top-header');
+  const toTop = document.getElementById('toTop');
+  function onScroll(){
+    header.classList.toggle('scrolled', window.scrollY > 10);
+    toTop.classList.toggle('show', window.scrollY > 600);
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+  toTop.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+
+  // Reveal on scroll
+  const items = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, {threshold:0.12});
+    items.forEach(el => io.observe(el));
+  } else {
+    items.forEach(el => el.classList.add('in'));
+  }
+
+  // Contact form -> opens email client (works on GitHub Pages, no backend needed)
+  const form = document.getElementById('contactForm');
+  const note = document.getElementById('formNote');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const d = Object.fromEntries(new FormData(form).entries());
+    if (!d.name.trim() || !/^\S+@\S+\.\S+$/.test(d.email) || !d.message.trim()) {
+      note.textContent = 'Please enter your name, a valid email and a message.';
+      note.style.color = '#dc2626';
+      return;
+    }
+    note.style.color = '';
+    note.textContent = 'Opening your email app...';
+    const subject = encodeURIComponent('Project Enquiry: ' + d.type);
+    const body = encodeURIComponent('Name: ' + d.name + '\nEmail: ' + d.email + '\nSolution: ' + d.type + '\n\n' + d.message);
+    window.location.href = 'mailto:hello@misolutions.my?subject=' + subject + '&body=' + body;
+  });
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
 
